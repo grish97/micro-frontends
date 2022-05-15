@@ -1,16 +1,23 @@
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { handleError } from "../configs/handleError.js";
+import { fromEnv } from "../configs/envConfig";
+import { handleError } from "../configs/handleError";
 
-const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
+const ACCESS_TOKEN_SECRET = fromEnv("ACCESS_TOKEN_SECRET");
+const REFRESH_TOKEN_SECRET = fromEnv("REFRESH_TOKEN_SECRET");
 
 /**
  * Verify access token
  * @param {Request} req
  * @param {Response} res
  */
-export function verfiyAccessToken(req, res, next) {
+export function verfiyAccessToken(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
-    const authHeader = req.headers["authorization"];
+    const authHeader = req.headers["authorization"] || "";
     const accessToken = authHeader.split(" ")[1];
 
     if (!accessToken) {
@@ -20,14 +27,14 @@ export function verfiyAccessToken(req, res, next) {
       });
     }
 
-    jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (error, data) => {
+    jwt.verify(accessToken, ACCESS_TOKEN_SECRET, (error, data: any) => {
       if (error) {
         return res.status(403).json({
           success: false,
           message: "A token is required for authentication",
         });
       } else if (data._id) {
-        req._id = data._id;
+        (req as any)._id = data._id;
         next();
       }
     });
@@ -44,6 +51,6 @@ export function verfiyAccessToken(req, res, next) {
  * Verfy refresh token
  * @param {string} refreshToken
  */
-export async function verifyRefreshToken(refreshToken) {
+export async function verifyRefreshToken(refreshToken: string) {
   return await jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
 }

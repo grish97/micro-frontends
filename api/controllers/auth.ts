@@ -1,12 +1,10 @@
+import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import Joi from "@hapi/joi";
-import User from "../models/user.js";
-import {
-  COOKIE_JWT_KEY,
-  REFRESH_TOKEN_EXP_AGE,
-} from "../middleware/helpers.js";
-import { verifyRefreshToken } from "../middleware/auth.js";
-import { handleError } from "../configs/handleError.js";
+import User from "../models/user";
+import { COOKIE_JWT_KEY, REFRESH_TOKEN_EXP_AGE } from "../middleware/helpers";
+import { verifyRefreshToken } from "../middleware/auth";
+import { handleError } from "../configs/handleError";
 
 // validate user info
 const reqisterSchema = Joi.object({
@@ -25,7 +23,7 @@ const loginSchema = Joi.object({
  * @param {Request} req
  * @param {Response} res
  */
-export async function login(req, res) {
+export async function login(req: Request, res: Response) {
   const body = req.body;
   const user = await User.findOne({ email: body.email });
 
@@ -65,7 +63,7 @@ export async function login(req, res) {
           data: user.getPublicFields(),
         });
     }
-  } catch (error) {
+  } catch (error: any) {
     handleError(error);
     res.status(400).json({ success: false, message: JSON.stringify(error) });
   }
@@ -76,7 +74,7 @@ export async function login(req, res) {
  * @param {Request} req
  * @param {Response} res
  */
-export async function refreshToken(req, res) {
+export async function refreshToken(req: Request, res: Response) {
   try {
     const cookies = req.cookies;
 
@@ -89,7 +87,7 @@ export async function refreshToken(req, res) {
 
     const cookieRefreshToken = cookies[COOKIE_JWT_KEY];
 
-    const payload = await verifyRefreshToken(cookieRefreshToken);
+    const payload: any = await verifyRefreshToken(cookieRefreshToken);
 
     const user = await User.findOne({ _id: payload._id }).exec();
 
@@ -111,7 +109,7 @@ export async function refreshToken(req, res) {
       success: true,
       data: user.getPublicFields(),
     });
-  } catch (error) {
+  } catch (error: any) {
     handleError(error);
     res.status(403).json({
       success: false,
@@ -125,7 +123,7 @@ export async function refreshToken(req, res) {
  * @param {Request} req
  * @param {Response} res
  */
-export async function logout(req, res) {
+export async function logout(req: Request, res: Response) {
   try {
     const cookies = req.cookies;
     const refreshToken = cookies[COOKIE_JWT_KEY];
@@ -134,7 +132,7 @@ export async function logout(req, res) {
       return res.sendStatus(204);
     }
 
-    const payload = await verifyRefreshToken(refreshToken);
+    const payload: any = await verifyRefreshToken(refreshToken);
 
     const user = await User.findOne({ _id: payload._id }).exec();
 
@@ -154,7 +152,7 @@ export async function logout(req, res) {
       success: true,
       message: "Successfully logged out",
     });
-  } catch (error) {
+  } catch (error: any) {
     handleError(error);
     res.status(400).json({
       success: false,
@@ -163,7 +161,7 @@ export async function logout(req, res) {
   }
 }
 
-export async function register(req, res) {
+export async function register(req: Request, res: Response) {
   const body = req.body;
   // check user by email is exist
   const existUser = await User.findOne({ email: body.email });
@@ -186,7 +184,7 @@ export async function register(req, res) {
   });
 
   try {
-    const { error } = reqisterSchema.validateAsync(req.body);
+    const { error } = await reqisterSchema.validateAsync(req.body);
 
     if (error) {
       return res.status(400).json({
@@ -200,7 +198,7 @@ export async function register(req, res) {
         data: savedUser,
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     handleError(error);
     return res.status(400).json({ success: false, message: error });
   }

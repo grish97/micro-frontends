@@ -1,13 +1,17 @@
 import mongoose from "mongoose";
-import { signAccessToken, signRefreshToken } from "../middleware/helpers.js";
+import { signAccessToken, signRefreshToken } from "../middleware/helpers";
 
 const User = new mongoose.Schema(
   {
     username: String,
     email: String,
+    picture: {
+      type: String,
+      default: null,
+    },
+    lastSeen: mongoose.Schema.Types.Date,
     password: String,
     refreshToken: String,
-    accessToken: String,
   },
   { timestamps: true }
 );

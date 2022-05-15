@@ -1,7 +1,7 @@
-import allowedOrigins from "./allowedOrigins.js";
+import allowedOrigins from "./allowedOrigins";
 
 export default {
-  origin: (origin, callback) => {
+  origin: (origin: string, callback: any) => {
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
@@ -9,4 +9,4 @@ export default {
     }
   },
   optionsSuccessStatus: 200,
-};
+} as any;

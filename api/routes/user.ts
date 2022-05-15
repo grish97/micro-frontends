@@ -1,6 +1,6 @@
 import express from "express";
-import * as user from "../controllers/user.js";
-import { verfiyAccessToken } from "../middleware/auth.js";
+import * as user from "../controllers/user";
+import { verfiyAccessToken } from "../middleware/auth";
 
 const router = express.Router();
 
