@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import MessageModel from "../models/message";
 import GroupModel from "../models/group";
+import MemberModel from "../models/member";
 import { catchAsync } from "../middleware/helpers";
 import AppError from "../services/AppError";
 import { IMessageBody } from "../types/message";
@@ -33,10 +34,15 @@ async function create(
   next: NextFunction
 ) {
   const userId = (req as any)._id;
-  const groupId = req.params.groupId;
   const body = req.body;
+  let group = null;
 
-  const group = await GroupModel.find({ groupId });
+  // @todo create new group and member
+  if (!body.groupId && body.toId) {
+    group = await createGroup(userId, body.toId);
+  } else {
+    group = await GroupModel.find({ groupId: body.groupId });
+  }
 
   if (!group) {
     return next(new AppError("Group not found", 400));
@@ -44,9 +50,9 @@ async function create(
 
   const message = new MessageModel({
     content: body.content,
-    groupId: groupId,
-    userId: userId,
-    lastIndex: 1,
+    groupId: (group as any).id,
+    creatorId: userId,
+    lastIndex: 1, // temporary value
   });
 
   await message.save();
@@ -55,6 +61,31 @@ async function create(
     success: true,
     data: message,
   });
+}
+
+/**
+ * Create new group and member for this group
+ * this method is experemental and can change in feature
+ * @param creatorId
+ * @param toId
+ * @returns
+ */
+async function createGroup(creatorId: string, toId: string) {
+  const group = new GroupModel({
+    creatorId: creatorId,
+  });
+
+  await group.save();
+
+  // add new member of this group
+  const member = new MemberModel({
+    groupId: group.id,
+    userId: toId,
+  });
+
+  await member.save();
+
+  return group;
 }
 
 /**
@@ -68,21 +99,11 @@ async function update(
   res: Response,
   next: NextFunction
 ) {
-  const userId = (req as any)._id;
-  const groupId = req.params.groupId;
   const messageId = req.params.messageId;
   const body = req.body;
 
-  const group = await GroupModel.find({ groupId });
-
-  if (!group) {
-    return next(new AppError("Group not found", 400));
-  }
-
   const message = await MessageModel.findOne({
     id: messageId,
-    userId: userId,
-    groupId: groupId,
   });
 
   if (!message) {
@@ -106,11 +127,15 @@ async function update(
  * @param next
  */
 async function remove(req: Request, res: Response, next: NextFunction) {
-  const { params, body } = req;
+  const messageId = req.params.messageId;
 
-  const message = await MessageModel.findOne({
-    id: params.messageId,
-    userId: (req as any)._id,
+  await MessageModel.deleteOne({
+    id: messageId,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Message Deleted",
   });
 }
 

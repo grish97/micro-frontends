@@ -10,7 +10,7 @@ const Message = new Schema<IMessageModelData, Model<IMessageModelData>>(
       type: Schema.Types.ObjectId,
       ref: "group",
     },
-    userId: {
+    creatorId: {
       type: Schema.Types.ObjectId,
       ref: "user",
     },

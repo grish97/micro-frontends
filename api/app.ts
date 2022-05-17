@@ -1,30 +1,33 @@
 import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import * as ProccessEvent from "./services/ProccessEvent";
-import AppError from "./services/AppError";
+import * as ProccessEvent from "./src/services/ProccessEvent";
+import AppError from "./src/services/AppError";
 
 ProccessEvent.unhandledRejection();
 ProccessEvent.uncaughtRejection();
 
-import envConfig from "./configs/envConfig";
-import { errorHandler } from "./middleware/errorHandler";
+import envConfig from "./src/configs/envConfig";
+import { errorHandler } from "./src/middleware/errorHandler";
 
 // DB connection
-import connectDb from "./db/db";
+import connectDb from "./src/db/db";
 
 // connect to database
 connectDb();
 
+// socket
+import useSocketIo from "./src/listeners";
+
 // routes
-import authRoute from "./routes/auth";
-import userRoute from "./routes/user";
-import groupRoute from "./routes/group";
-import messageRoute from "./routes/message";
+import authRoute from "./src/routes/auth";
+import userRoute from "./src/routes/user";
+import groupRoute from "./src/routes/group";
+import messageRoute from "./src/routes/message";
 
 // cors
-import credentials from "./middleware/credentials";
-import corsOptions from "./configs/corsOptions";
+import credentials from "./src/middleware/credentials";
+import corsOptions from "./src/configs/corsOptions";
 
 const app = express();
 
@@ -46,6 +49,8 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
 
 app.use(errorHandler);
 
-app.listen(envConfig.PORT, () => {
+const server = app.listen(envConfig.PORT, () => {
   console.log("Conected");
 });
+
+useSocketIo(server);

@@ -10,7 +10,7 @@
 - Express
 - mongoose
 - JWT Authentication
-- WebSocket Socket.io ***(comming soon)***
+- WebSocket Socket.io
 - Joi (for validations)
 
 > ### **Client (Micro-Frontend Architecture)**

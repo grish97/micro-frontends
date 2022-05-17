@@ -3,6 +3,8 @@ import { IMessageBody } from "../types/message";
 
 export const createMessageSchema = Joi.object<IMessageBody>({
   content: Joi.string().required(),
+  groupId: Joi.string().empty(),
+  toId: Joi.string(),
 });
 
 export const updateMessageSchema = Joi.object<Partial<IMessageBody>>({

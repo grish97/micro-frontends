@@ -101,10 +101,7 @@ async function update(
   const creatorId = (req as any)._id;
   const groupId = params.groupId;
 
-  const group = await GroupModel.findOne({
-    id: groupId,
-    creatorId: creatorId,
-  });
+  const group = await GroupModel.findById(groupId);
 
   if (!group) {
     return next(new AppError("Group with requested id is not defined", 400));
