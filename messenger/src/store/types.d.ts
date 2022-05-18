@@ -15,7 +15,16 @@ declare module "@store" {
     email: string;
   };
 
+  type TRoom = {
+    id: string;
+    content: string;
+    seen: boolean;
+    createdAt: string;
+  };
+
   type TMemberState = {
     members: TMember[];
+    room: TRoom[];
+    selectedRoomId: string | null;
   };
 }
