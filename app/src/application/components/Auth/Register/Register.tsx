@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Input, Select, Button } from "antd";
-import { api } from "services";
+import { axios } from "services";
 import "./Register.scss";
+import apiRoutes from "../../../../configs/apiRoutes";
 
 const { Option } = Select;
 
@@ -39,18 +40,20 @@ export default function Register() {
       email: values.email,
       password: values.password,
     });
-    const observer = api.post("auth/register", body);
-    observer.subscribe((res) => {
-      if (res.success) {
-        navigate("/auth/login");
-      } else {
-        console.log(res.message);
-      }
+    const res = await axios.post(apiRoutes.APP_AUTH_REGISTER.url, body, {
+      headers: {
+        "Content-type": "application/json",
+      },
+      withCredentials: true,
     });
+
+    if (res.status) {
+      navigate("/auth/login");
+    }
   }
 
   return (
-    <div className="register-container">
+
       <div className="register-form">
         <Form
           {...formItemLayout}
@@ -151,6 +154,6 @@ export default function Register() {
           </Form.Item>
         </Form>
       </div>
-    </div>
+
   );
 }

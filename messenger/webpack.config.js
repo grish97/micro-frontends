@@ -31,7 +31,7 @@ module.exports = {
       },
       {
         test: /\.(css|s[ac]ss)$/i,
-        use: ["style-loader", "css-loader", "postcss-loader"],
+        use: ["style-loader", "css-loader", "postcss-loader", "sass-loader"],
       },
       {
         test: /\.(ts|tsx|js|jsx)$/,
@@ -39,6 +39,11 @@ module.exports = {
         use: {
           loader: "babel-loader",
         },
+      },
+      {
+        test: /\.(ts|tsx|js|jsx)$/,
+        enforce: "pre",
+        use: ["source-map-loader"],
       },
     ],
   },
@@ -62,10 +67,10 @@ module.exports = {
       },
     }),
     new HtmlWebPackPlugin({
-      template: "./src/index.html",
+      template: "./src/public/index.html",
     }),
     new Dotenv({
-      path: "./.env",
+      path: "./.env.development",
     }),
     new webpack.ProvidePlugin({
       React: "react",

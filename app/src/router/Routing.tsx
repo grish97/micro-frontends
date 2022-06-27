@@ -9,6 +9,7 @@ import RequireAuth from "./RequireAuth";
 
 import { Auth, Dashboard, Unknown, Unauthorized } from "application/components";
 import Layout from "application/components/Layout/Layout";
+import Index from "application/components/Layout/AuthLayout";
 
 export default function Routing() {
   const auth = useAuth();
@@ -18,8 +19,12 @@ export default function Routing() {
       <Route path="/" element={<Layout />}>
         {/** Public routes */}
         <Route path="/auth" element={<PublicRoutes />}>
-          <Route path="login" element={<Auth.Login />} />
-          <Route path="register" element={<Auth.Register />} />
+
+          <Route element={<Index />}>
+            <Route path="login" element={<Auth.Login />} />
+            <Route path="register" element={<Auth.Register />} />
+          </Route>
+
           <Route path="unauthorized" element={<Unauthorized />} />
         </Route>
 

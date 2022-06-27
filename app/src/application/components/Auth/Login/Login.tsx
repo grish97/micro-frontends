@@ -50,7 +50,10 @@ export default function Login() {
 
         localStorage.setItem("persist", values.remember.toString());
 
-        navigate(from, { replace: true });
+        // navigate(from, { replace: true });
+
+        // @todo: temporary solution
+        window.location.href = "http://localhost:3005";
       }
     } catch (error: any) {
       const errResponse = error?.response || {};
@@ -70,7 +73,7 @@ export default function Login() {
   };
 
   return (
-    <div className="login-container">
+
       <div className="login-form">
         {errorMessage && (
           <Alert
@@ -137,6 +140,6 @@ export default function Login() {
           </Form.Item>
         </Form>
       </div>
-    </div>
+
   );
 }

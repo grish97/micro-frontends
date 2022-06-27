@@ -5,6 +5,10 @@ export default {
     method: "POST",
     url: "auth/login",
   },
+  APP_AUTH_REGISTER: {
+    method: "POST",
+    url: "auth/register",
+  },
   APP_REFRESH: {
     method: "GET",
     url: "auth/refresh",

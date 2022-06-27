@@ -1,0 +1,14 @@
+
+
+.typing-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .box-content {
+
+    .custom-input {
+        border-radius: 15px;
+    }
+  }
+}

@@ -1,11 +1,16 @@
-import express from "express";
+import express, {Response, Request, NextFunction} from "express";
 import group from "../controllers/group";
 import validateGroup, {
   createGroupSchema,
   updateGroupSchema,
 } from "../validation/groupValidation";
 import validateBody from "../middleware/validateBody";
-import { verfiyAccessToken } from "../middleware/auth";
+// import { verfiyAccessToken } from "../middleware/auth";
+
+// remove  check with access token
+const verfiyAccessToken = (req: Request, res: Response, next: NextFunction) => {
+  next()
+}
 
 const router = express.Router();
 

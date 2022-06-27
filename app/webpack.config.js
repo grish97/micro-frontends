@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
@@ -30,7 +31,7 @@ module.exports = {
       },
       {
         test: /\.(css|s[ac]ss)$/i,
-        use: ["style-loader", "css-loader", "postcss-loader"],
+        use: ["style-loader", "css-loader", "postcss-loader", "sass-loader"],
       },
       {
         test: /\.(ts|tsx|js|jsx)$/,
@@ -46,7 +47,9 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "app",
       filename: "remoteEntry.js",
-      remotes: {},
+      remotes: {
+
+      },
       exposes: {},
       shared: {
         ...deps,
@@ -65,6 +68,9 @@ module.exports = {
     }),
     new Dotenv({
       path: "./.env",
+    }),
+    new webpack.ProvidePlugin({
+      React: "react",
     }),
   ],
 };

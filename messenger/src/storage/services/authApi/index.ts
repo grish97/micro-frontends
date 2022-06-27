@@ -4,7 +4,7 @@ export const {
   useSignInMutation,
   useSignUpMutation,
   useSignOutQuery,
-  useRefreshTokenMutation
+  useRefreshTokenMutation,
 } = authApi;
 
 export default authApi;
