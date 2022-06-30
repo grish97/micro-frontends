@@ -5,6 +5,10 @@ export const apiRoutes: TApiRoutes = {
     url: "/group",
     method: "GET",
   },
+  APP_GET_CONVERSATIONS: {
+    url: "/group/conversations",
+    method: "GET",
+  },
   APP_GET_MESSAGES: {
     url: "/message",
     method: "GET",

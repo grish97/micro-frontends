@@ -2,7 +2,7 @@ import Joi, { ObjectSchema } from "joi";
 import { IGroupBody } from "../types/group";
 
 export const createGroupSchema = Joi.object<IGroupBody>({
-  name: Joi.string(),
+  name: Joi.string().empty(),
   members: Joi.array().items(Joi.string()).min(1).required(),
   isPrivate: Joi.bool().required(),
   creatorId: Joi.string().required(),

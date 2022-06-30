@@ -50,10 +50,7 @@ export default function Login() {
 
         localStorage.setItem("persist", values.remember.toString());
 
-        // navigate(from, { replace: true });
-
-        // @todo: temporary solution
-        window.location.href = "http://localhost:3005";
+        navigate(from, { replace: true });
       }
     } catch (error: any) {
       const errResponse = error?.response || {};

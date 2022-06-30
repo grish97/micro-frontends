@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Suspense } from "react";
+import { Routes, Route, Navigate, useRoutes } from "react-router-dom";
 import useAuth from "hooks/useAuth";
 
 // Route types
@@ -10,6 +11,8 @@ import RequireAuth from "./RequireAuth";
 import { Auth, Dashboard, Unknown, Unauthorized } from "application/components";
 import Layout from "application/components/Layout/Layout";
 import Index from "application/components/Layout/AuthLayout";
+
+import Messenger from "messenger/Messenger";
 
 export default function Routing() {
   const auth = useAuth();
@@ -33,6 +36,8 @@ export default function Routing() {
           <Route path="/" element={<RequireAuth allowedRoles={auth.roles} />}>
             <Route path="" element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<Dashboard />} />
+
+            <Route path="messenger" element={<Messenger />} />
           </Route>
         </Route>
 

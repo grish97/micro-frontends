@@ -4,11 +4,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0 10px;
 
-  .box-content {
-
-    .custom-input {
-        border-radius: 15px;
-    }
+  .custom-input {
+    border-radius: 45px;
+    margin: 0 15px;
   }
 }

@@ -1,9 +1,10 @@
-import { FC } from "react";
+import { FC, lazy } from "react";
 import { Row, Col } from "antd";
 import Toolbar from "./Toolbar";
 import Members from "./Members";
 import ChatContent from "./ChatContent";
 import "./style.scss";
+
 
 interface IPropType {}
 

@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { FaLink } from "react-icons/fa";
-import { MdKeyboardVoice } from "react-icons/md";
+import { MdKeyboardVoice, MdOutlineEmojiEmotions } from "react-icons/md";
 import { Input } from "components";
 import "./style.scss";
 
@@ -25,6 +25,7 @@ const TypingBox: FC<IPropType> = ({ className }) => {
         size="large"
         placeholder="Write a message..."
         noBorder={true}
+        suffix={<MdOutlineEmojiEmotions color={ICON_COLOR} size={25} />}
       />
 
       <MdKeyboardVoice color={ICON_COLOR} onClick={selectFiles} size={25} />

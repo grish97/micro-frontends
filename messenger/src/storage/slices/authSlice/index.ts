@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 import { IAuthSate } from "@auth";
-import { RootState } from "store";
+import { RootState } from "storage";
 
 
 const initialState: IAuthSate = {

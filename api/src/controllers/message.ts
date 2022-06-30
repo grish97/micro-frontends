@@ -41,7 +41,7 @@ async function create(
   if (!body.groupId && body.toId) {
     group = await createGroup(userId, body.toId);
   } else {
-    group = await GroupModel.find({ groupId: body.groupId });
+    group = await GroupModel.findOne({ groupId: body.groupId });
   }
 
   if (!group) {
@@ -50,7 +50,11 @@ async function create(
 
   const message = new MessageModel({
     content: body.content,
-    groupId: (group as any).id,
+    groupId: (group as any)._id,
+    log: {
+      isSeen: false,
+      seenDate: null,
+    },
     creatorId: userId,
     lastIndex: 1, // temporary value
   });

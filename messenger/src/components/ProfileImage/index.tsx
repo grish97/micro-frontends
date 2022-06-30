@@ -1,33 +1,36 @@
-import { FC, useMemo } from 'react';
+import { FC } from "react";
 import "./style.scss";
 
 interface IPropType {
   imageSrc?: string;
   ownerName: string;
   size?: number;
+  showStatus?: boolean;
 }
 
-const ProfileImage: FC<IPropType> = ({ imageSrc, ownerName, size }) => {
-  const imageSize = useMemo(() => {
-    const finallySize = size ?? 40;
-
-    return {
-      width: finallySize,
-      height: finallySize,
-    };
-  }, [size]);
-
+const ProfileImage: FC<IPropType> = ({ imageSrc, ownerName, size, showStatus }) => {
   return (
-    <div className="profile-icon" style={imageSize}>
+    <div
+      className="profile-icon"
+      style={{
+        width: size,
+        height: size,
+      }}
+    >
       {imageSrc ? (
         <img src={imageSrc} alt={`${ownerName}'s profile image`} />
       ) : (
         <div className="first-latter">{ownerName.charAt(0)}</div>
       )}
 
-      <div className="status active"></div>
+      {showStatus && <div className="status active"></div>}
     </div>
   );
+};
+
+ProfileImage.defaultProps = {
+  size: 40,
+  showStatus: true,
 };
 
 export default ProfileImage;

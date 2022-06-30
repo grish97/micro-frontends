@@ -12,10 +12,11 @@ interface IPropType {
   background?: "theme" | "white" | "black";
   noBorder?: boolean;
   prefix?: ReactNode;
+  suffix?: ReactNode;
 }
 
 const Input: FC<IPropType> = (props) => {
-  const { size, onChange, value, background, noBorder, placeholder, prefix } = props;
+  const { size, onChange, value, background, noBorder, placeholder, prefix, suffix } = props;
 
   return (
     <AntDInput
@@ -27,6 +28,7 @@ const Input: FC<IPropType> = (props) => {
         [`no-border`]: noBorder,
       })}
       prefix={prefix}
+      suffix={suffix}
     />
   );
 };

@@ -1,13 +1,16 @@
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { Response, Request, NextFunction } from "express";
 import { handleError } from "../configs/handleError";
 import GroupModel from "../models/group";
 import MemberModel from "../models/member";
+import UserModel from "../models/user";
+import MessageModel from "../models/message";
 import { catchAsync } from "../middleware/helpers";
 import AppError from "../services/AppError";
 
-import { IGroupBody } from "../types/group";
+import { IGroupBody, IGroupModelData } from "../types/group";
 import { IMemberModelData } from "../types/member";
+import { IMessageModelData } from "../types/message";
 
 /**
  * Get all groups by creatorId
@@ -26,6 +29,105 @@ async function getAll(
   res.status(200).json({
     success: true,
     data: groups || [],
+  });
+}
+
+async function conversationsList(
+  req: Request<any, any, IGroupBody>,
+  res: Response,
+  next: NextFunction
+) {
+  const userId = (req as any)._id;
+
+  const conversations = await GroupModel.aggregate([
+    {
+      $match: { creatorId: new Types.ObjectId(userId) },
+    },
+    {
+      $lookup: {
+        as: "member",
+        from: "memebers",
+        let: { id: "$_id" },
+        pipeline: [
+          {
+            $match: { $expr: { $eq: ["$groupId", "$$id"] } },
+          },
+          {
+            $lookup: {
+              from: "users",
+              localField: "userId",
+              foreignField: "_id",
+              as: "user",
+            },
+          },
+          { $unwind: "$user" },
+          {
+            $addFields: {
+              username: "$user.username",
+              picture: "$user.picture",
+            },
+          },
+          {
+            $project: {
+              username: 1,
+              picture: 1,
+            },
+          },
+        ],
+      },
+    },
+    { $unwind: "$member" },
+    {
+      $addFields: {
+        username: "$member.username",
+        picture: "$member.picture",
+      },
+    },
+    {
+      $lookup: {
+        as: "message",
+        from: "messages",
+        let: { id: "$_id" },
+        pipeline: [
+          {
+            $match: { $expr: { $eq: ["$groupId", "$$id"] } },
+          },
+          {
+            $group: {
+              _id: "$groupId",
+              notSeenCount: {
+                $sum: {
+                  $cond: {
+                    if: { $eq: ["$log.isSeen", false] },
+                    then: 1,
+                    else: 0,
+                  },
+                },
+              },
+              lastMessage: {
+                $last: "$$ROOT",
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        name: 1,
+        picture: 1,
+        isPrivate: 1,
+        creatorId: 1,
+        username: 1,
+        userId: 1,
+        message: 1,
+      },
+    },
+  ]);
+
+  return res.status(200).json({
+    success: true,
+    data: conversations,
   });
 }
 
@@ -144,6 +246,7 @@ async function remove(req: Request, res: Response, next: NextFunction) {
 
 export default {
   getAll: catchAsync(getAll),
+  conversationsList: catchAsync(conversationsList),
   create: catchAsync(create),
   update: catchAsync(update),
   remove: catchAsync(remove),

@@ -48,9 +48,11 @@ module.exports = {
       name: "app",
       filename: "remoteEntry.js",
       remotes: {
-
+        messenger: "messenger@http://localhost:3005/remoteEntry.js",
       },
-      exposes: {},
+      exposes: {
+        "./hooks": "./src/hooks/useAuth.ts"
+      },
       shared: {
         ...deps,
         react: {
@@ -61,6 +63,9 @@ module.exports = {
           singleton: true,
           requiredVersion: deps["react-dom"],
         },
+        "./src/hooks/index.ts": {
+          singleton: true,
+        }
       },
     }),
     new HtmlWebPackPlugin({

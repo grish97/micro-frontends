@@ -6,6 +6,7 @@ import "./style.scss";
 import SearchGroup from './SearchGroup';
 
 const Members: FC = () => {
+  const { data, error, isLoading, isSuccess } = useGetGroupsQuery();
 
   return (
     <div className="chat-content">

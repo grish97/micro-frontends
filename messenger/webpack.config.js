@@ -52,8 +52,13 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "messenger",
       filename: "remoteEntry.js",
-      remotes: {},
-      exposes: {},
+      remotes: {
+        hooks: "hooks@http://localhost:3000/remoteEntry.js",
+      },
+      exposes: {
+        "./Messenger": "./src/pages/Messenger/index.tsx",
+        "./routes": "./src/navigation/routes.tsx",
+      },
       shared: {
         ...deps,
         react: {

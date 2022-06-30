@@ -7,6 +7,6 @@ export const selectGroupData = createSelector(
   groupResult => groupResult.data
 );
 
-export const { useGetGroupsQuery } = taskApi;
+export const { useGetGroupsQuery, useGetConversationsQuery } = taskApi;
 
 export default taskApi;

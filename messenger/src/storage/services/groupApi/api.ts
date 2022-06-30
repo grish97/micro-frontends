@@ -15,6 +15,8 @@ export const api = sourceApi.injectEndpoints({
           : [{type: "Group", id: "LIST"}]
       },
     }),
-
+    getConversations: builder.query<any[], void>({
+      query: () => apiRoutes.APP_GET_CONVERSATIONS.url,
+    }),
   }),
 });

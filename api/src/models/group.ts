@@ -7,6 +7,10 @@ const Group = new Schema<IGroupModelData, Model<IGroupModelData>>(
       type: String,
       default: null,
     },
+    picture: {
+      type: String,
+      default: null,
+    },
     isPrivate: {
       type: Boolean,
       default: true,

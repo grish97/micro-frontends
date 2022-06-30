@@ -6,6 +6,10 @@ const Message = new Schema<IMessageModelData, Model<IMessageModelData>>(
   {
     content: String,
     lastIndex: Number,
+    log: {
+      isSeen: Boolean,
+      seenDate: Schema.Types.Date,
+    },
     groupId: {
       type: Schema.Types.ObjectId,
       ref: "group",
