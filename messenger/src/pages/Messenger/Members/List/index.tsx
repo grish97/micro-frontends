@@ -6,8 +6,6 @@ import Member from './Member';
 const List: FC = () => {
   const { data } = useGetConversationsQuery();
 
-  console.log(data);
-
   return (
     <div className="members-list">
       <Member />

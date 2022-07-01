@@ -1,13 +1,17 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import {configureStore, combineReducers, Middleware, ReducersMapObject} from "@reduxjs/toolkit";
 import { sourceApi } from "./services/sourceApi";
 import authReducer from "storage/slices/authSlice";
 
-export const reducers = combineReducers({
+export const reducers: ReducersMapObject = {
   [sourceApi.reducerPath]: sourceApi.reducer,
   auth: authReducer
-});
+};
+
+export const middlewares: Middleware[] = [
+  sourceApi.middleware,
+];
 
 export const store = configureStore({
-  reducer: reducers,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sourceApi.middleware)
+  reducer: combineReducers(reducers),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middlewares)
 });

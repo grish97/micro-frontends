@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setAuth as setAuthData, logout } from "store/slices/authSlice";
-import { RootState } from "store/store";
+import { setAuth as setAuthData, logout } from "storage/slices/authSlice";
+import { RootState } from "storage/store";
 
 import { TAuthState } from "@store";
 

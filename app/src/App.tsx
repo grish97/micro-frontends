@@ -1,7 +1,6 @@
 import React from "react";
-import "./index.scss";
-
 import Routing from "router/Routing";
+import "./index.scss";
 
 export default function App() {
   return <Routing />;

@@ -53,7 +53,7 @@ module.exports = {
       name: "messenger",
       filename: "remoteEntry.js",
       remotes: {
-        hooks: "hooks@http://localhost:3000/remoteEntry.js",
+        store: "store@http://localhost:3010/remoteEntry.js"
       },
       exposes: {
         "./Messenger": "./src/pages/Messenger/index.tsx",

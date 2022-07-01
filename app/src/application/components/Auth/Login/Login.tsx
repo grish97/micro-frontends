@@ -11,7 +11,7 @@ import "./Login.scss";
 
 export default function Login() {
   const { setAuth, persist } = useAuth();
-  const [errorMessage, setErrorrMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,11 +56,11 @@ export default function Login() {
       const errResponse = error?.response || {};
 
       if (errResponse.status === 400) {
-        setErrorrMessage(errResponse.data.message);
+        setErrorMessage(errResponse.data.message);
       } else if (errResponse.status === 401) {
-        setErrorrMessage("Unauthorized");
+        setErrorMessage("Unauthorized");
       } else if (!error?.response || error?.message) {
-        setErrorrMessage(error?.message || "No server response");
+        setErrorMessage(error?.message || "No server response");
       }
     }
   }

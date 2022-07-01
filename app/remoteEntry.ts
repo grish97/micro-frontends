@@ -13,3 +13,17 @@ declare module "messenger/routes" {
 
   export const RouteElements: React.ComponentType;
 }
+
+declare module "store/StoreProvider" {
+  import { ReducersMapObject, Middleware } from "@reduxjs/toolkit";
+
+  const StoreProvider: React.FC<{
+    children: React.ReactNode;
+    reducers?: ReducersMapObject;
+    middlewares?: Middleware[];
+  }>;
+
+  export default StoreProvider;
+}
+
+declare module "store/storeService";
